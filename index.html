@@ -8,7 +8,7 @@ body {
   background: #ef3340;
   color: white;
 
-  margin: 2.25em;
+  margin: 2.25rem 7.593rem;
 
   text-align: center;
 
@@ -34,14 +34,18 @@ h2 {
 }
 
 pre {
+  white-space: pre-line;
+
   background: white;
   color: #ef3340;
 
-  padding: 1em 2.25em;
-  margin: 0 -2.25em;
+  padding: 1rem 7.593rem;
+  margin: 0 -7.593rem;
 }
 
 kbd {
+  white-space: nowrap;
+
   background: white;
   color: #ef3340;
 
@@ -101,7 +105,7 @@ svg {
 
 .generate[disabled] {
   background: transparent;
-  opacity: 0.5;
+  opacity: 0.66;
 }
 
 .download {
@@ -130,6 +134,13 @@ svg {
 
 .hidden {
   display: none;
+}
+
+@media (max-width: 800px) {
+  body {
+    margin-left: 2.25rem;
+    margin-right: 2.25rem;
+  }
 }
 </style>
 <h1>Post IconFonts</h1>
@@ -161,7 +172,7 @@ svg {
 </a>
 <h2>Usage</h2>
 <p>
-  Follow the steps above to generate the SVG icons, and then use the code below to add icons. You&rsquo;ll want to swap the <kbd>#fa-check</kbd> for the icon you actually want to use (it&rsquo;s just the css class name).
+  Follow the steps above to generate the SVG icons, and then use the code below to add icons. You&rsquo;ll want to swap the <kbd>#fa-check</kbd> for the icon you actually want to use&mdash;it&rsquo;s just the css class name.
 </p>
 <pre>
 &lt;svg width=&quot;12&quot; height=&quot;12&quot;&gt;&lt;use xlink:href=&quot;/icons.svg#fa-check&quot; /&gt;&lt;/svg&gt;
