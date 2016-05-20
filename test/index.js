@@ -102,7 +102,7 @@ test('glyph aliases', t => {
 
 test('end-to-end svg generation', t => {
   const fontBuffer = new Uint8Array(
-    readFileSync(join(__dirname, '../webapp/FontAwesome.otf'))
+    readFileSync(join(__dirname, '../app/icon-fonts/FontAwesome.otf'))
   ).buffer;
 
   const svg = svgIcon(`
@@ -124,7 +124,7 @@ test('end-to-end svg generation', t => {
 
 test('svg gerenation dulplicate names', t => {
   const fontBuffer = new Uint8Array(
-    readFileSync(join(__dirname, '../webapp/FontAwesome.otf'))
+    readFileSync(join(__dirname, '../app/icon-fonts/FontAwesome.otf'))
   ).buffer;
 
   const svg = svgIcon(`

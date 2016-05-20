@@ -1,0 +1,143 @@
+body {
+  font: 12pt/1.5 'Work Sans', 'Helvetica', sans-serif;
+
+  background: #ef3340;
+  color: white;
+
+  margin: 2.25rem 7.593rem;
+
+  text-align: center;
+
+  transition: background 0.1s ease-in-out;
+}
+
+h1 {
+  font-size: 36pt;
+  font-weight: 300;
+  letter-spacing: -0.08em;
+
+  margin: 2.25rem 0 1.5rem;
+
+  text-shadow: 0 1pt 0 rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+  font-size: 24pt;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+
+  margin: 2.25rem 0 1.5rem;
+}
+
+a {
+  color: inherit;
+}
+
+pre {
+  white-space: pre-line;
+
+  background: white;
+  color: #ef3340;
+
+  padding: 1rem 7.593rem;
+  margin: 0 -7.593rem;
+}
+
+kbd {
+  white-space: nowrap;
+
+  background: white;
+  color: #ef3340;
+
+  border-radius: 3px;
+
+  padding: 0 0.5rem;
+}
+
+svg {
+  fill: currentColor;
+}
+
+.dragging {
+  background: #f9423a;
+}
+
+.lead {
+  font-size: 18pt;
+  font-weight: 200;
+
+  margin: 2.25rem 0;
+
+  text-align: center;
+}
+
+.input {
+  max-width: 24em;
+  margin: 0 auto;
+}
+.input-section {
+  font: inherit;
+  box-sizing: border-box;
+  border: 0;
+  width: 100%;
+
+  background: white;
+  color: #ef3340;
+
+  padding: 0.5em 1em;
+  margin: 1rem 0;
+
+  border-radius: 0.5em;
+
+  box-shadow: 0 2pt 0 rgba(0, 0, 0, 0.15);
+}
+
+.generate {
+  background: transparent;
+  color: white;
+
+  border: 1px solid currentColor;
+  margin: 1.5rem 0;
+}
+.generate:hover, .generate:active {
+  background: #000;
+}
+
+.generate[disabled] {
+  background: transparent;
+  opacity: 0.66;
+}
+
+.download {
+  text-decoration: none;
+
+  font-size: 18pt;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+
+  margin: 2.25rem 0;
+}
+
+.css-complete-icon,
+.font-complete-icon {
+  display: none;
+}
+.has-css .css-complete-icon,
+.has-font .font-complete-icon {
+  display: initial;
+}
+.has-css .css-await-icon,
+.has-font .font-await-icon {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  body {
+    margin-left: 2.25rem;
+    margin-right: 2.25rem;
+  }
+}

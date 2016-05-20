@@ -1,9 +1,12 @@
+const webpack = require('webpack');
+const { join } = require('path');
+
 module.exports = {
   context: __dirname,
-  entry: './webapp/index',
+  entry: join(__dirname, 'app/index.js'),
   devtool: 'source-map',
   output: {
-    filename: 'dist/index.js',
+    filename: join(__dirname, 'dist/index.js'),
     library: 'post-iconfonts',
     libraryTarget: 'umd',
   },
@@ -19,4 +22,7 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin(),
+  ],
 };
