@@ -4,7 +4,7 @@ body {
   background: #ef3340;
   color: white;
 
-  margin: 2.25rem 7.593rem;
+  margin: 7.593rem;
 
   text-align: center;
 
@@ -16,7 +16,7 @@ h1 {
   font-weight: 300;
   letter-spacing: -0.08em;
 
-  margin: 2.25rem 0 1.5rem;
+  margin: 5.063rem 0 1.5rem;
 
   text-shadow: 0 1pt 0 rgba(0, 0, 0, 0.15);
 }
@@ -26,7 +26,7 @@ h2 {
   font-weight: 300;
   letter-spacing: -0.02em;
 
-  margin: 2.25rem 0 1.5rem;
+  margin: 5.063rem 0 1.5rem;
 }
 
 a {
@@ -75,7 +75,8 @@ svg {
   max-width: 24em;
   margin: 0 auto;
 }
-.input-section {
+.input-section,
+.input-action {
   font: inherit;
   box-sizing: border-box;
   border: 0;
@@ -92,30 +93,46 @@ svg {
   box-shadow: 0 2pt 0 rgba(0, 0, 0, 0.15);
 }
 
-.generate {
+.input-action {
+  display: block;
+  text-decoration: none;
+
   background: transparent;
   color: white;
 
   border: 1px solid currentColor;
   margin: 1.5rem 0;
+
+  cursor: pointer;
 }
-.generate:hover, .generate:active {
+.input-action:hover, .input-action:active {
   background: #000;
 }
-
-.generate[disabled] {
+.input-action[disabled],
+.input-action.disabled {
   background: transparent;
   opacity: 0.66;
+  cursor: default;
 }
 
-.download {
-  text-decoration: none;
+.instruction-step {
+  display: inline-block;
+  vertical-align: middle;
 
-  font-size: 18pt;
-  font-weight: 300;
-  letter-spacing: -0.01em;
+  font-size: 0.8em;
+  font-weight: 700;
 
-  margin: 2.25rem 0;
+  height: 1.5em;
+  width: 1.5em;
+
+  background: white;
+  color: #ef3340;
+
+  margin-right: 0.25rem;
+
+  border-radius: 100%;
+
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .css-complete-icon,
@@ -131,8 +148,13 @@ svg {
   display: none;
 }
 
-.hidden {
-  display: none;
+.left {
+  float: left;
+}
+
+.instruction-step.left {
+  position: relative;
+  top: 0.2em;
 }
 
 @media (max-width: 800px) {

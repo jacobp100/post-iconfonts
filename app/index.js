@@ -78,6 +78,6 @@ document.addEventListener('drop', e => {
 
 generate.addEventListener('click', () => {
   const svg = postIconfonts(state.css, state.font);
-  download.classList.remove('hidden');
+  download.classList.remove('disabled');
   download.setAttribute('href', `data:image/svg+xml;utf8,${svg}`);
 });
