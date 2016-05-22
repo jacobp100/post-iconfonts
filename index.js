@@ -103,7 +103,9 @@ exports.default = function (cssString, fontBuffer) {
   var _ref2$transformNames = _ref2.transformNames;
   var transformNames = _ref2$transformNames === undefined ? _fp.identity : _ref2$transformNames;
 
-  var font = _opentype2.default.parse(fontBuffer);
+  var fontUint8Buffer = !(fontBuffer instanceof ArrayBuffer) ? new Uint8Array(fontBuffer).buffer : fontBuffer;
+
+  var font = _opentype2.default.parse(fontUint8Buffer);
   var glyphsToSelectors = getGlyphsForCss(cssString, { filterNames: filterNames, transformNames: transformNames });
 
   var ascender = font.ascender / font.unitsPerEm * size;

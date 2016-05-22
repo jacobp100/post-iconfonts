@@ -90,7 +90,11 @@ export default (cssString, fontBuffer, {
   filterNames = null,
   transformNames = identity,
 } = {}) => {
-  const font = opentype.parse(fontBuffer);
+  const fontUint8Buffer = !(fontBuffer instanceof ArrayBuffer)
+    ? new Uint8Array(fontBuffer).buffer
+    : fontBuffer;
+
+  const font = opentype.parse(fontUint8Buffer);
   const glyphsToSelectors = getGlyphsForCss(cssString, { filterNames, transformNames });
 
   const ascender = font.ascender / font.unitsPerEm * size;

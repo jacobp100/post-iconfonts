@@ -100,10 +100,22 @@ test('glyph aliases', t => {
   }, glyphs);
 });
 
-test('end-to-end svg generation', t => {
+test('end-to-end svg generation using Uint8Array', t => {
   const fontBuffer = new Uint8Array(
     readFileSync(join(__dirname, '../app/icon-fonts/FontAwesome.otf'))
   ).buffer;
+
+  const svg = svgIcon(`
+    .fa-glass:before {
+      content: "\\f000";
+    }
+  `, fontBuffer);
+
+  t.not(svg.indexOf('<path id="fa-glass" '), -1);
+});
+
+test('end-to-end svg generation', t => {
+  const fontBuffer = readFileSync(join(__dirname, '../app/icon-fonts/FontAwesome.otf'));
 
   const svg = svgIcon(`
     .fa-glass:before {
@@ -123,9 +135,7 @@ test('end-to-end svg generation', t => {
 });
 
 test('svg gerenation dulplicate names', t => {
-  const fontBuffer = new Uint8Array(
-    readFileSync(join(__dirname, '../app/icon-fonts/FontAwesome.otf'))
-  ).buffer;
+  const fontBuffer = readFileSync(join(__dirname, '../app/icon-fonts/FontAwesome.otf'));
 
   const svg = svgIcon(`
     .fa-glass:before, .fa-glass-alias:before {

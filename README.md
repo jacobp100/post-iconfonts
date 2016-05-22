@@ -15,7 +15,7 @@ Generate a SVG image with,
 ```js
 import postIconfonts from 'post-iconfonts';
 
-const font = new Uint8Array(readFileSync('font-awesome.otf')).buffer; // NOTE: Uint8Array
+const font = readFileSync('font-awesome.otf'));
 const css = readFileSync('font-awesome.css', 'utf-8');
 
 const svgString = postIconfonts(css, font);
@@ -33,7 +33,7 @@ Then add icons with,
 postIconfonts(cssString, fontBuffer, options);
 ```
 
-`cssString` must be a string. `fontBuffer` must be a Uint8Array (see first example).
+`cssString` must be a string. `fontBuffer` can be an ArrayBuffer or a standard node.js Buffer.
 
 The options takes the following:
 
