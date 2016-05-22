@@ -15,7 +15,7 @@ Generate a SVG image with,
 ```js
 import postIconfonts from 'post-iconfonts';
 
-const font = readFileSync('font-awesome.otf'));
+const font = readFileSync('font-awesome.otf');
 const css = readFileSync('font-awesome.css', 'utf-8');
 
 const svgString = postIconfonts(css, font);
