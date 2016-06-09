@@ -36,5 +36,9 @@
       "babel-register"
     ],
     "babel": "inherit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacobp100/post-iconfonts"
   }
 }
