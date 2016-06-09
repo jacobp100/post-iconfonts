@@ -98,17 +98,30 @@ exports.default = function (cssString, fontBuffer) {
 
   var _ref2$size = _ref2.size;
   var size = _ref2$size === undefined ? 12 : _ref2$size;
+  var _ref2$width = _ref2.width;
+  var width = _ref2$width === undefined ? size : _ref2$width;
   var _ref2$filterNames = _ref2.filterNames;
   var filterNames = _ref2$filterNames === undefined ? null : _ref2$filterNames;
   var _ref2$transformNames = _ref2.transformNames;
   var transformNames = _ref2$transformNames === undefined ? _fp.identity : _ref2$transformNames;
+  var _ref2$precision = _ref2.precision;
+  var precision = _ref2$precision === undefined ? 6 : _ref2$precision;
+  var _ref2$warnOnOversized = _ref2.warnOnOversized;
+  var
+  // TODO: On next major version bump, make this always true
+  warnOnOversized = _ref2$warnOnOversized === undefined ? false : _ref2$warnOnOversized;
 
   var fontUint8Buffer = !(fontBuffer instanceof ArrayBuffer) ? new Uint8Array(fontBuffer).buffer : fontBuffer;
 
   var font = _opentype2.default.parse(fontUint8Buffer);
   var glyphsToSelectors = getGlyphsForCss(cssString, { filterNames: filterNames, transformNames: transformNames });
 
-  var ascender = font.ascender / font.unitsPerEm * size;
+  var unitsPerEm = font.unitsPerEm;
+
+  var ascender = size * font.ascender / unitsPerEm;
+  var boundingAdvanceWidth = unitsPerEm * width / size;
+
+  var oversizedGlyphs = [];
 
   var generateSvgForGlyphNameAndIds = function generateSvgForGlyphNameAndIds(glyphName, _ref3) {
     var _ref4 = _toArray(_ref3);
@@ -118,7 +131,13 @@ exports.default = function (cssString, fontBuffer) {
     var otherIds = _ref4.slice(1);
 
     var glyph = font.charToGlyph(glyphName);
-    var d = glyph.getPath(0, ascender, size).toPathData(6);
+    var advanceWidth = glyph.advanceWidth;
+
+
+    if (advanceWidth > boundingAdvanceWidth) oversizedGlyphs.push.apply(oversizedGlyphs, _toConsumableArray(glyphsToSelectors[glyphName]));
+
+    var x = size * (boundingAdvanceWidth - advanceWidth) / (2 * unitsPerEm);
+    var d = glyph.getPath(x, ascender, size).toPathData(precision);
     var mainPath = '<path id="' + firstId + '" d="' + d + '"/>';
     var refPaths = (0, _fp.map)(function (id) {
       return '<use id="' + id + '" xlink:href="#' + firstId + '"/>';
@@ -128,7 +147,7 @@ exports.default = function (cssString, fontBuffer) {
 
   var svgBody = (0, _fp.flow)(_fp.toPairs, (0, _fp.map)((0, _fp.spread)(generateSvgForGlyphNameAndIds)), (0, _fp.join)(''))(glyphsToSelectors);
 
-  var svg = '<svg width="0" height="0" viewBox="0 0 ' + size + ' ' + size + '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>' + svgBody + '</defs></svg>';
+  var svg = '<svg width="0" height="0" viewBox="0 0 ' + width + ' ' + size + '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>' + svgBody + '</defs></svg>';
 
-  return svg;
+  return warnOnOversized ? { svg: svg, oversizedGlyphs: oversizedGlyphs } : svg;
 };

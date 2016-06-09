@@ -146,3 +146,81 @@ test('svg gerenation dulplicate names', t => {
   t.not(svg.indexOf('<path id="fa-glass" '), -1);
   t.not(svg.indexOf('<use id="fa-glass-alias" xlink:href="#fa-glass"/>'), -1);
 });
+
+test('oversized glyphs should warn', t => {
+  const fontBuffer = new Uint8Array(
+    readFileSync(join(__dirname, '../app/icon-fonts/FontAwesome.otf'))
+  ).buffer;
+
+  const { oversizedGlyphs } = svgIcon(`
+    .fa-glass:before {
+      content: "\\f000";
+    }
+  `, fontBuffer, {
+    width: 6,
+    height: 12,
+    warnOnOversized: true,
+  });
+
+  t.deepEqual(oversizedGlyphs, ['fa-glass']);
+});
+
+test('non-oversized glyphs should not warn', t => {
+  const fontBuffer = new Uint8Array(
+    readFileSync(join(__dirname, '../app/icon-fonts/FontAwesome.otf'))
+  ).buffer;
+
+  const { oversizedGlyphs } = svgIcon(`
+    .fa-glass:before {
+      content: "\\f000";
+    }
+  `, fontBuffer, {
+    width: 12,
+    height: 12,
+    warnOnOversized: true,
+  });
+
+  t.deepEqual(oversizedGlyphs, []);
+});
+
+test('should center glyphs', t => {
+  const fontBuffer = readFileSync(join(__dirname, '../app/icon-fonts/FontAwesome.otf'));
+
+  const svg = svgIcon(`
+    .fa-glass:before {
+      content: "\\f000";
+    }
+  `, fontBuffer, {
+    width: 120,
+    height: 12,
+  });
+
+  const startPoint = svg.match(/d="M([\d.]+)/);
+  t.not(startPoint, null);
+
+  const startValue = Number(startPoint[1]);
+
+  t.true(startValue > 60);
+  t.false(startValue < 60);
+});
+
+test('precision', t => {
+  const fontBuffer = new Uint8Array(
+    readFileSync(join(__dirname, '../app/icon-fonts/FontAwesome.otf'))
+  ).buffer;
+
+  const svg = svgIcon(`
+    .fa-glass:before {
+      content: "\\f000";
+    }
+  `, fontBuffer, {
+    precision: 4,
+  });
+
+  const decimalValuesRe = /\d\.(\d+)/g;
+  let match;
+
+  while ((match = decimalValuesRe.exec(svg)) !== null) { // eslint-disable-line
+    t.is(match[1].length, 4);
+  }
+});

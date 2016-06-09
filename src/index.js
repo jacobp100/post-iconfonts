@@ -87,8 +87,12 @@ export const getGlyphsForCss = (cssString, {
 
 export default (cssString, fontBuffer, {
   size = 12,
+  width = size,
   filterNames = null,
   transformNames = identity,
+  precision = 6,
+  // TODO: On next major version bump, make this always true
+  warnOnOversized = false,
 } = {}) => {
   const fontUint8Buffer = !(fontBuffer instanceof ArrayBuffer)
     ? new Uint8Array(fontBuffer).buffer
@@ -97,11 +101,20 @@ export default (cssString, fontBuffer, {
   const font = opentype.parse(fontUint8Buffer);
   const glyphsToSelectors = getGlyphsForCss(cssString, { filterNames, transformNames });
 
-  const ascender = font.ascender / font.unitsPerEm * size;
+  const { unitsPerEm } = font;
+  const ascender = size * font.ascender / unitsPerEm;
+  const boundingAdvanceWidth = unitsPerEm * width / size;
+
+  const oversizedGlyphs = [];
 
   const generateSvgForGlyphNameAndIds = (glyphName, [firstId, ...otherIds]) => {
     const glyph = font.charToGlyph(glyphName);
-    const d = glyph.getPath(0, ascender, size).toPathData(6);
+    const { advanceWidth } = glyph;
+
+    if (advanceWidth > boundingAdvanceWidth) oversizedGlyphs.push(...glyphsToSelectors[glyphName]);
+
+    const x = size * (boundingAdvanceWidth - advanceWidth) / (2 * unitsPerEm);
+    const d = glyph.getPath(x, ascender, size).toPathData(precision);
     const mainPath = `<path id="${firstId}" d="${d}"/>`;
     const refPaths = map(id => `<use id="${id}" xlink:href="#${firstId}"/>`, otherIds);
     return join('', [mainPath, ...refPaths]);
@@ -113,7 +126,9 @@ export default (cssString, fontBuffer, {
     join('')
   )(glyphsToSelectors);
 
-  const svg = `<svg width="0" height="0" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${svgBody}</defs></svg>`;
+  const svg = `<svg width="0" height="0" viewBox="0 0 ${width} ${size}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${svgBody}</defs></svg>`;
 
-  return svg;
+  return warnOnOversized
+    ? { svg, oversizedGlyphs }
+    : svg;
 };
